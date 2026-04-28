@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  # Backend API Server
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: aa-matrix-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=aa_matrix
+      - DB_USER=postgres
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - JWT_SECRET=${JWT_SECRET:-your_super_secret_key}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET:-your_refresh_secret}
+      - TRITON_SERVER_URL=http://triton:8000
+      - CORS_ORIGIN=http://web:3000,http://localhost:3000
+    depends_on:
+      - postgres
+      - triton
+    networks:
+      - aa-matrix-network
+    restart: unless-stopped
+
+  # React Web App
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: aa-matrix-web
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:5000
+    depends_on:
+      - backend
+    networks:
+      - aa-matrix-network
+    restart: unless-stopped
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: aa-matrix-postgres
+    environment:
+      - POSTGRES_DB=aa_matrix
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - aa-matrix-network
+    restart: unless-stopped
+
+  # NVIDIA Triton Inference Server
+  triton:
+    image: nvcr.io/nvidia/tritonserver:latest
+    container_name: aa-matrix-triton
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+      - "8002:8002"
+    volumes:
+      - ./triton_models:/models
+    environment:
+      - TZ=UTC
+    networks:
+      - aa-matrix-network
+    restart: unless-stopped
+    # Note: Requires NVIDIA Docker runtime
+    # See: https://github.com/NVIDIA/nvidia-docker
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  aa-matrix-network:
+    driver: bridge
