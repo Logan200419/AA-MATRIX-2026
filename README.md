@@ -29,6 +29,7 @@ One-click detailed reports
 
 <img width="1248" height="144" alt="image" src="https://github.com/user-attachments/assets/0c72d0b9-8d2a-4a70-9b7f-3f41b4c0ad08" />
 
+
 🔁 **Adaptive Learning**
 
 User feedback improves model
@@ -41,6 +42,7 @@ Prevents blind trust in AI outputs
 
 🌐 **Universal Content Support**
 Image - Video - Audio
+
 
 📲 **User Action Layer**
 
@@ -58,6 +60,7 @@ Processing Pipeline Flowchart
 **Tools & Technologies**
 
 <img width="270" height="196" alt="image" src="https://github.com/user-attachments/assets/ad35426d-c739-48aa-b4f0-5551c532f69d" />
+
 
 **Project Status**
 <img width="652" height="318" alt="image" src="https://github.com/user-attachments/assets/1d0f324e-3202-49ca-8885-dd0e841aa3fb" />
