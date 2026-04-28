@@ -29,7 +29,7 @@ This project focuses on detecting deepfake videos using a fine-tuned VideoMAE mo
 
 ---
 
-## 🔄 Current Status
+## 🔄 PHASE 2- Current Status 5PM
 | Component              | Status        |
 |----------------------|--------------|
 | Frontend             | ✔️ Completed |
