@@ -65,3 +65,80 @@ This project focuses on detecting deepfake videos using a fine-tuned VideoMAE mo
 ## 📌 Notes
 - Transitioning from system setup → model performance improvement
 - Triton server enables scalable and production-ready inference
+
+
+### Phase 3- 9pm work status:
+
+## 📊 Work Completed & Remaining
+
+The project has progressed from system setup to incorporating advanced features that enhance usability, intelligence, and scalability. Below is a structured breakdown of completed components and upcoming work.
+
+---
+
+### ✅ Completed Work
+
+#### 🔹 Model Training & Fine-Tuning  
+- [x] Set up VideoMAE-based deepfake detection pipeline  
+- [x] Prepared data preprocessing workflow (frame extraction, normalization)  
+- [x] Established training pipeline structure  
+
+This forms the **foundation of the detection system**.
+
+---
+
+#### 🔹 Model Optimization (Initial Setup)  
+- [x] Designed preprocessing pipeline for efficient inference  
+- [x] Structured model integration with inference server  
+- [x] Ensured compatibility with real-time processing  
+
+This ensures the system is **ready for performance improvements**.
+
+---
+
+#### 🔹 Decision Engine (Design Phase)  
+- [x] Defined Trust Score (0–100) framework  
+- [x] Designed Risk Level classification (Low / Medium / High)  
+- [x] Structured confidence-based output logic  
+
+This acts as the **core reasoning layer of the system**.
+
+---
+
+#### 🔹 Browser Extension (Concept & Design)  
+- [x] Designed real-time detection workflow  
+- [x] Defined passive content monitoring approach  
+- [x] Planned non-intrusive alert mechanism  
+
+This enables **proactive detection during content consumption**.
+
+---
+
+#### 🔹 Multi-Modal Framework (Planning Stage)  
+- [x] Established video-based detection pipeline  
+- [x] Defined extension to image and audio inputs  
+- [x] Designed unified verification architecture  
+
+This expands the system into a **multi-modal trust platform**.
+
+---
+
+### ⏳ Remaining Work
+
+#### 🔹 Deployment & Scalability  
+- [ ] Implement Docker-based containerization  
+- [ ] Set up Kubernetes for orchestration  
+- [ ] Deploy on cloud platforms (AWS / GCP)  
+
+This will enable **production-level scalability and reliability**.
+
+---
+
+#### 🔹 UI/UX Enhancements  
+- [ ] Improve Trust Score visualization  
+- [ ] Add detailed verification reports  
+- [ ] Enhance feedback and interaction mechanisms  
+
+This will improve **user experience and system interpretability**.
+
+---
+
