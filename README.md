@@ -86,8 +86,9 @@ Users don’t just see results —> they understand **reliability**
 .
 
 <img width="652" height="189" alt="image" src="https://github.com/user-attachments/assets/82af3701-dfe6-4102-85d1-3e1fea116a11" />
+.
 
-
+.
 
 <img width="734" height="222" alt="image" src="https://github.com/user-attachments/assets/4c69ac50-769a-44a2-9546-a81517d31666" />
 
