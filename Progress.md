@@ -122,12 +122,12 @@ This expands the system into a **multi-modal trust platform**.
 
 ---
 
-### ⏳ Remaining Work
+### ⏳ Future enhancement-
 
 #### 🔹 Deployment & Scalability  
-- [ ] Implement Docker-based containerization  
-- [ ] Set up Kubernetes for orchestration  
-- [ ] Deploy on cloud platforms (AWS / GCP)  
+- [ ] Defined extension to image and audio inputs  
+- [ ] Designed unified verification architecture  
+- [ ] Deploy on cloud platforms 
 
 This will enable **production-level scalability and reliability**.
 
@@ -135,10 +135,13 @@ This will enable **production-level scalability and reliability**.
 
 #### 🔹 UI/UX Enhancements  
 - [ ] Improve Trust Score visualization  
-- [ ] Add detailed verification reports  
-- [ ] Enhance feedback and interaction mechanisms  
 
 This will improve **user experience and system interpretability**.
 
 ---
+### 🔹 Security & Abuse Prevention  
+- [ ] Implement rate limiting and API security  
+- [ ] Add protection against adversarial inputs  
+- [ ] Ensure safe handling of malicious or manipulated content  
 
+This ensures the system remains **robust and secure against misuse**.
