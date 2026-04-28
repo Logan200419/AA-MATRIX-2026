@@ -7,7 +7,7 @@
 
 🚀 **Overview**
 
-**AA-MATRIX-2026** is an advanced AI system designed to detect deepfakes in real time and assign trust scores to digital content.
+**TruLink** is an advanced AI system designed to detect deepfakes in real time and assign trust scores to digital content.
 
 It combines on-demand verification with a passive browser-based protection layer, enabling users to identify manipulated media while consuming content.
 <img width="1920" height="1080" alt="Untitled design" src="https://github.com/user-attachments/assets/37454d21-9c72-4d4f-956b-ed61c22bc6c3" />
