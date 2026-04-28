@@ -5,7 +5,7 @@ This project focuses on detecting deepfake videos using a fine-tuned VideoMAE mo
 
 ---
 
-## ✅ Current Milestone: Application Development & Inference Setup
+## ✅ Phase 1-  Current Milestone: Application Development & Inference Setup
 
 ### 🔹 Frontend
 - Designed and implemented user interface for:
