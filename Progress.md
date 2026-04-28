@@ -67,8 +67,13 @@ This project focuses on detecting deepfake videos using a fine-tuned VideoMAE mo
 - Triton server enables scalable and production-ready inference
 
 
-### Phase 3- 9pm work status:
+## Phase 3- 9pm work status:
+.
 
+<img width="1259" height="535" alt="image" src="https://github.com/user-attachments/assets/61a040a9-e5a9-4c4b-b5f5-1e31c9a6b85a" />
+
+
+.
 ## 📊 Work Completed & Remaining
 
 The project has progressed from system setup to incorporating advanced features that enhance usability, intelligence, and scalability. Below is a structured breakdown of completed components and upcoming work.
