@@ -44,10 +44,12 @@ Image - Video - Audio
 
 📲 **User Action Layer**
 
-<img width="667" height="419" alt="image" src="https://github.com/user-attachments/assets/d2d14126-d8d5-4449-ab41-230c1f6a4f1d" />
+<img width="603" height="408" alt="image" src="https://github.com/user-attachments/assets/96e925ba-7c1b-47cb-9108-2de544aa8d41" />
+
 
 
 🏗️ **Architecture**
+
 
 Processing Pipeline Flowchart
 <img width="407" height="367" alt="image" src="https://github.com/user-attachments/assets/3a220161-e923-4b5e-841b-329d95a3d091" />
