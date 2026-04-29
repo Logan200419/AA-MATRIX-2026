@@ -5,9 +5,7 @@ import {
   FlatList,
   Dimensions,
   ActivityIndicator,
-  ViewToken,
 } from 'react-native';
-import { Video } from 'expo-video';
 import ReelCard from '../components/ReelCard';
 
 const { height: screenHeight } = Dimensions.get('window');
@@ -22,13 +20,13 @@ const VIDEOS = [
 ];
 
 export default function ReelsScreen({ videos, loading }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [playingIndex, setPlayingIndex] = useState(0);
-  const [reelsData, setReelsData] = useState([]);
+  const [reelsData, setReelsData] = useState(VIDEOS);
 
   useEffect(() => {
-    // Use provided videos or default to hardcoded videos
-    setReelsData(videos && videos.length > 0 ? videos : VIDEOS);
+    if (videos && videos.length > 0) {
+      setReelsData(videos);
+    }
   }, [videos]);
 
   const viewabilityConfig = useRef({
@@ -36,31 +34,20 @@ export default function ReelsScreen({ videos, loading }) {
     viewAreaCoveragePercentThreshold: 80,
   }).current;
 
-  const onViewableItemsChanged = useCallback(({ changed }) => {
-    if (changed.length > 0) {
-      const mostVisibleItem = changed.reduce((prev, current) =>
-        current.isViewable && current.viewablePercent > (prev.viewablePercent || 0)
-          ? current
-          : prev
-      );
-
-      if (mostVisibleItem && mostVisibleItem.isViewable) {
-        setCurrentIndex(mostVisibleItem.index);
-        setPlayingIndex(mostVisibleItem.index);
-      }
+  const onViewableItemsChanged = useCallback(({ viewableItems }) => {
+    if (viewableItems.length > 0) {
+      setPlayingIndex(viewableItems[0].index);
     }
   }, []);
 
-  const keyExtractor = (item) => item.id;
-
   const renderReel = ({ item, index }) => {
-    const isVisible = index === playingIndex;
-    const type = item.name.toLowerCase().includes('fake') ? 'AI' : 'REAL';
+    // ✅ Match the type strings ReelCard expects
+    const type = item.name.toLowerCase().includes('fake') ? 'FAKE' : 'REAL';
 
     return (
       <ReelCard
         video={item}
-        isVisible={isVisible}
+        isVisible={index === playingIndex}
         type={type}
         index={index}
       />
@@ -69,10 +56,8 @@ export default function ReelsScreen({ videos, loading }) {
 
   if (loading) {
     return (
-      <View style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#fff" />
-        </View>
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#fff" />
       </View>
     );
   }
@@ -82,7 +67,7 @@ export default function ReelsScreen({ videos, loading }) {
       <FlatList
         data={reelsData}
         renderItem={renderReel}
-        keyExtractor={keyExtractor}
+        keyExtractor={(item) => item.id}
         pagingEnabled
         snapToInterval={screenHeight}
         decelerationRate="fast"
@@ -90,7 +75,7 @@ export default function ReelsScreen({ videos, loading }) {
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
         showsVerticalScrollIndicator={false}
-        getItemLayout={(data, index) => ({
+        getItemLayout={(_, index) => ({
           length: screenHeight,
           offset: screenHeight * index,
           index,

@@ -7,40 +7,32 @@ import {
   Pressable,
   Animated,
 } from 'react-native';
-import { Video } from 'expo-video';
+import { VideoView, useVideoPlayer } from 'expo-video';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const ReelCard = ({ video, isVisible, type, index }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likeAnim] = React.useState(new Animated.Value(1));
-  const videoRef = React.useRef(null);
+
+  const player = useVideoPlayer(video.uri, (p) => {
+    p.loop = true;
+  });
 
   useEffect(() => {
-    if (isVisible && videoRef.current) {
-      setIsPlaying(true);
-      videoRef.current.play?.();
+    if (isVisible) {
+      player.play();
     } else {
-      setIsPlaying(false);
-      videoRef.current?.pause?.();
+      player.pause();
     }
   }, [isVisible]);
 
   const handleLike = () => {
     setLiked(!liked);
     Animated.sequence([
-      Animated.timing(likeAnim, {
-        toValue: 1.3,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-      Animated.timing(likeAnim, {
-        toValue: 1,
-        duration: 200,
-        useNativeDriver: true,
-      }),
+      Animated.timing(likeAnim, { toValue: 1.3, duration: 200, useNativeDriver: true }),
+      Animated.timing(likeAnim, { toValue: 1, duration: 200, useNativeDriver: true }),
     ]).start();
   };
 
@@ -50,43 +42,29 @@ const ReelCard = ({ video, isVisible, type, index }) => {
 
   return (
     <View style={styles.container}>
-      {/* Video Background */}
-      <Video
-        ref={videoRef}
-        source={video.uri}
+      <VideoView
+        player={player}
         style={styles.video}
-        resizeMode="cover"
-        isLooping
-        shouldPlay={isVisible}
-        useNativeControls={false}
-        progressUpdateIntervalMillis={500}
+        contentFit="cover"
+        nativeControls={false}
       />
 
-      {/* Gradient Overlay */}
       <View style={styles.gradientOverlay} />
 
-      {/* Top Section - Badge */}
       <View style={styles.topSection}>
         <View style={[styles.badge, { borderColor: badgeColor }]}>
           <View style={[styles.badgeDot, { backgroundColor: badgeColor }]} />
-          <Text style={[styles.badgeText, { color: badgeColor }]}>
-            {badgeLabel}
-          </Text>
+          <Text style={[styles.badgeText, { color: badgeColor }]}>{badgeLabel}</Text>
         </View>
       </View>
 
-      {/* Center - Reel Number */}
       <View style={styles.centerContent}>
         <Text style={styles.reelNumber}>#{index + 1}</Text>
       </View>
 
-      {/* Right Side - Action Buttons */}
       <View style={styles.rightActions}>
         <Pressable
-          style={({ pressed }) => [
-            styles.actionButton,
-            pressed && styles.actionButtonPressed,
-          ]}
+          style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}
           onPress={handleLike}
         >
           <Animated.View style={{ transform: [{ scale: likeAnim }] }}>
@@ -100,34 +78,21 @@ const ReelCard = ({ video, isVisible, type, index }) => {
         </Pressable>
 
         <Pressable style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}>
-          <MaterialCommunityIcons
-            name="comment-outline"
-            size={28}
-            color="#fff"
-          />
+          <MaterialCommunityIcons name="comment-outline" size={28} color="#fff" />
           <Text style={styles.actionCount}>1.2K</Text>
         </Pressable>
 
         <Pressable style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}>
-          <MaterialCommunityIcons
-            name="share-outline"
-            size={28}
-            color="#fff"
-          />
+          <MaterialCommunityIcons name="share-outline" size={28} color="#fff" />
           <Text style={styles.actionCount}>892</Text>
         </Pressable>
 
         <Pressable style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}>
-          <MaterialCommunityIcons
-            name="music-outline"
-            size={28}
-            color="#fff"
-          />
+          <MaterialCommunityIcons name="music-outline" size={28} color="#fff" />
           <Text style={styles.actionLabel}>Sound</Text>
         </Pressable>
       </View>
 
-      {/* Bottom Section - Info */}
       <View style={styles.bottomSection}>
         <View style={styles.userInfo}>
           <View style={styles.userAvatar} />
@@ -142,7 +107,6 @@ const ReelCard = ({ video, isVisible, type, index }) => {
           </Pressable>
         </View>
 
-        {/* Video Info */}
         <View style={styles.videoInfo}>
           <Text style={styles.infoText}>
             {isReal ? '🎬 Authentic Content' : '🤖 AI Generated'}
@@ -150,7 +114,6 @@ const ReelCard = ({ video, isVisible, type, index }) => {
         </View>
       </View>
 
-      {/* Play Indicator */}
       {!isVisible && (
         <View style={styles.playIndicator}>
           <View style={styles.playButton}>
@@ -162,20 +125,20 @@ const ReelCard = ({ video, isVisible, type, index }) => {
   );
 };
 
+export default ReelCard;
+
 const styles = StyleSheet.create({
   container: {
     width: screenWidth,
     height: screenHeight,
     backgroundColor: '#000',
-    position: 'relative',
-    overflow: 'hidden',
   },
   video: {
-    width: '100%',
-    height: '100%',
     position: 'absolute',
     top: 0,
     left: 0,
+    width: screenWidth,
+    height: screenHeight,
   },
   gradientOverlay: {
     position: 'absolute',
@@ -183,108 +146,96 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    backgroundColor: 'transparent',
+    // Simulated gradient via layered views if needed
   },
   topSection: {
     position: 'absolute',
-    top: 16,
+    top: 50,
     right: 16,
     zIndex: 10,
   },
   badge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    borderWidth: 1.5,
     borderRadius: 20,
-    borderWidth: 2,
-    backdropFilter: 'blur(10px)',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    gap: 6,
   },
   badgeDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    marginRight: 8,
   },
   badgeText: {
     fontSize: 12,
     fontWeight: '700',
-    letterSpacing: 0.5,
+    letterSpacing: 1.2,
   },
   centerContent: {
     position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginLeft: -30,
-    marginTop: -40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 5,
+    top: 50,
+    left: 16,
+    zIndex: 10,
   },
   reelNumber: {
-    fontSize: 64,
-    fontWeight: '900',
-    color: 'rgba(255, 255, 255, 0.1)',
-    textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 4,
+    color: 'rgba(255,255,255,0.6)',
+    fontSize: 14,
+    fontWeight: '600',
   },
   rightActions: {
     position: 'absolute',
-    bottom: 100,
     right: 12,
-    zIndex: 10,
+    bottom: 160,
     alignItems: 'center',
+    gap: 20,
+    zIndex: 10,
   },
   actionButton: {
     alignItems: 'center',
-    marginVertical: 12,
-    padding: 8,
-    borderRadius: 30,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    minWidth: 50,
+    gap: 4,
+    padding: 4,
   },
   actionButtonPressed: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    transform: [{ scale: 0.95 }],
+    opacity: 0.7,
   },
   actionCount: {
     color: '#fff',
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: '600',
-    marginTop: 4,
+    textShadowColor: 'rgba(0,0,0,0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   actionLabel: {
     color: '#fff',
-    fontSize: 10,
-    fontWeight: '600',
-    marginTop: 4,
+    fontSize: 11,
+    fontWeight: '500',
   },
   bottomSection: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 30,
     left: 0,
-    right: 0,
-    backgroundColor: 'linear-gradient(transparent, rgba(0,0,0,0.8))',
-    paddingBottom: 20,
-    paddingHorizontal: 12,
-    paddingTop: 40,
+    right: 80,
+    paddingHorizontal: 16,
     zIndex: 10,
   },
   userInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 10,
+    gap: 10,
   },
   userAvatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#555',
     borderWidth: 2,
     borderColor: '#fff',
-    marginRight: 10,
   },
   userDetails: {
     flex: 1,
@@ -294,64 +245,57 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
     marginBottom: 2,
+    textShadowColor: 'rgba(0,0,0,0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   caption: {
-    color: 'rgba(255, 255, 255, 0.8)',
-    fontSize: 12,
-    lineHeight: 16,
+    color: 'rgba(255,255,255,0.85)',
+    fontSize: 13,
+    fontWeight: '400',
+    lineHeight: 18,
   },
   followButton: {
-    backgroundColor: '#00D9FF',
-    paddingHorizontal: 14,
-    paddingVertical: 6,
+    borderWidth: 1.5,
+    borderColor: '#fff',
     borderRadius: 6,
-    minWidth: 70,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 5,
   },
   followButtonText: {
-    color: '#000',
-    fontSize: 12,
-    fontWeight: '700',
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: '600',
   },
   videoInfo: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 6,
-    alignSelf: 'flex-start',
+    marginTop: 4,
   },
   infoText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: '600',
+    color: 'rgba(255,255,255,0.75)',
+    fontSize: 13,
+    fontWeight: '500',
   },
   playIndicator: {
     position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginLeft: -35,
-    marginTop: -35,
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 8,
+    zIndex: 5,
   },
   playButton: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   playText: {
     color: '#fff',
-    fontSize: 24,
+    fontSize: 22,
+    marginLeft: 4,
   },
 });
-
-export default ReelCard;
